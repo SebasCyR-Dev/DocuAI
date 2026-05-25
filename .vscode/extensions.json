@@ -1,0 +1,14 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "usernamehw.errorlens",
+    "bradlc.vscode-tailwindcss",
+    "Prisma.prisma",
+    "eamodio.gitlens",
+    "yoavbls.pretty-ts-errors",
+    "wallabyjs.console-ninja",
+    "dsznajder.es7-react-js-snippets",
+    "csstools.postcss"
+  ]
+}

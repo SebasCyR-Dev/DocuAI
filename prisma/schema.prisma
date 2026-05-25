@@ -1,0 +1,132 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id           String        @id @default(cuid())
+  email        String        @unique
+  name         String?
+  avatarUrl    String?
+  repositories Repository[]
+  subscription Subscription?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@map("users")
+}
+
+model Repository {
+  id             String          @id @default(cuid())
+  userId         String
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider       Provider
+  externalId     String // Repo ID en GitHub/GitLab
+  name           String
+  fullName       String // owner/repo
+  webhookSecret  String // Para validar webhooks
+  webhookId      String? // ID del webhook en provider
+  defaultBranch  String          @default("main")
+  config         Json            @default("{}")
+  documentations Documentation[]
+  isActive       Boolean         @default(true)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  @@unique([provider, externalId])
+  @@index([userId])
+  @@map("repositories")
+}
+
+model Documentation {
+  id            String       @id @default(cuid())
+  repositoryId  String
+  repository    Repository   @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  commitSha     String
+  commitMessage String       @db.Text
+  commitAuthor  String
+  type          ChangeType
+  impact        Impact
+  documentType  DocumentType @default(TECHNICAL) // BUSINESS o TECHNICAL
+  content       String       @db.Text
+  format        Format
+  storagePath   String? // Path en Supabase Storage para PDFs/HTML
+  metadata      Json         @default("{}")
+  generatedAt   DateTime     @default(now())
+
+  @@index([repositoryId, generatedAt(sort: Desc)])
+  @@index([commitSha])
+  @@index([documentType])
+  @@map("documentations")
+}
+
+model Subscription {
+  id               String    @id @default(cuid())
+  userId           String    @unique
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan             Plan
+  status           Status
+  stripeId         String?   @unique // Stripe subscription ID
+  currentPeriodEnd DateTime?
+  cancelAt         DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@map("subscriptions")
+}
+
+enum Provider {
+  GITHUB
+  GITLAB
+}
+
+enum ChangeType {
+  FEATURE
+  FIX
+  REFACTOR
+  BREAKING
+  DOCS
+  STYLE
+  TEST
+  CHORE
+  SKIP
+}
+
+enum Impact {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum Format {
+  MARKDOWN
+  HTML
+  PDF
+}
+
+enum Plan {
+  FREE
+  STARTER
+  PRO
+  ENTERPRISE
+}
+
+enum Status {
+  ACTIVE
+  CANCELED
+  PAST_DUE
+  TRIALING
+}
+
+enum DocumentType {
+  BUSINESS   // Documento para clientes/PM/stakeholders
+  TECHNICAL  // Documento para desarrolladores
+}
