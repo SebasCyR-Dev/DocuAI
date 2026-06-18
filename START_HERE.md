@@ -92,6 +92,11 @@ pnpm dev
 choco install ngrok
 
 # O descargar de: https://ngrok.com/download
+# Si ya tienes ngrok.exe descargado en C:\Users\HP\ngrok\
+# Agregar al PATH (PowerShell normal):
+$currentPath = [Environment]::GetEnvironmentVariable("Path", "User")
+[Environment]::SetEnvironmentVariable("Path", "$currentPath;C:\Users\HP\ngrok", "User")
+# Luego cierra y abre PowerShell
 ```
 
 ### Paso 2: Configurar ngrok
@@ -271,6 +276,18 @@ Ctrl+Shift+P → "TypeScript: Restart TS Server"
 # Reiniciar servidor
 # Ctrl+C en pnpm dev
 pnpm dev
+```
+
+### Error: ngrok command not found
+
+```bash
+# Si ngrok está instalado pero no en PATH, usa ruta completa:
+C:\Users\HP\ngrok\ngrok.exe http 3000
+
+# O agrega al PATH permanentemente (PowerShell):
+$currentPath = [Environment]::GetEnvironmentVariable("Path", "User")
+[Environment]::SetEnvironmentVariable("Path", "$currentPath;C:\Users\HP\ngrok", "User")
+# Cierra y abre PowerShell
 ```
 
 ### Necesitas ayuda de Claude

@@ -83,10 +83,10 @@ function generateBaseBusinessDoc(options: GenerateBusinessDocOptions): string {
 
 ## Información General
 
-**Proyecto:** ${repositoryName}  
-**Fecha:** ${formattedDate}  
-**Responsable:** ${commitAuthor}  
-**Referencia:** ${commitSha.substring(0, 7)}
+- **Proyecto:** ${repositoryName}
+- **Fecha:** ${formattedDate}
+- **Responsable:** ${commitAuthor}
+- **Referencia:** ${commitSha.substring(0, 7)}
 
 ## Resumen Ejecutivo
 
@@ -98,8 +98,8 @@ ${analysis.functionalDescription}
 
 ## Impacto en el Negocio
 
-**Clasificación:** ${typeLabel}  
-**Nivel de Impacto:** ${impactLabel}
+- **Clasificación:** ${typeLabel}  
+- **Nivel de Impacto:** ${impactLabel}
 
 ${analysis.businessValue}
 

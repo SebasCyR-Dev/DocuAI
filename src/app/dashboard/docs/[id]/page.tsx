@@ -174,18 +174,21 @@ export default async function DocumentationPage({
 
         {/* Actions */}
         <div className="mt-6 flex gap-4">
-          <button
-            disabled
-            className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+          <a
+            href={`/api/export/${doc.id}/pdf`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
           >
-            Exportar PDF (Próximamente)
-          </button>
-          <button
-            disabled
-            className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+            📄 Descargar PDF
+          </a>
+          <a
+            href={`/api/export/${doc.id}/html`}
+            download
+            className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
           >
-            Exportar HTML (Próximamente)
-          </button>
+            🌐 Descargar HTML
+          </a>
           <CopyMarkdownButton content={doc.content} />
         </div>
       </main>
